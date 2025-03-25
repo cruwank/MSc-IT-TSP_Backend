@@ -28,14 +28,15 @@ export class AuthService {
     const payload = { username: user.username, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
+      user,
     };
   }
 
-  async register(username: string, password: string) {
-    const existing = await this.usersService.findByUsername(username);
-    if (existing) {
-      throw new UnauthorizedException('User already exists');
-    }
-    return this.usersService.create(username, password);
+  async loginStudent(user: any) {
+    const payload = { username: user.email, sub: user.id };
+    return {
+      access_token: this.jwtService.sign(payload),
+      user,
+    };
   }
 }

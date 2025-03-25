@@ -1,25 +1,43 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import {Body, Controller, HttpStatus, Post} from '@nestjs/common';
+import {AuthService} from './auth.service';
+import {AuthDto} from "./auth.dto";
+import {Public} from "./decorators/public.decorator";
+import {handleApiResponse} from "../common/helpers/response.helper";
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
-    return this.authService.register(createUserDto.username, createUserDto.password);
-  }
-
   @Post('login')
-  async login(@Body() createUserDto: CreateUserDto) {
-    const user = await this.authService.validateUser(
-      createUserDto.username,
-      createUserDto.password,
-    );
-    if (!user) {
-      return { message: 'Invalid credentials' };
+  @Public()
+  async login(@Body() createUserDto: AuthDto) {
+    try {
+      let payload;
+      const user = await this.authService.validateUser(
+          createUserDto.username,
+          createUserDto.password,
+      );
+      if (!user) {
+        payload= 'Invalid credentials' ;
+      }else {
+        payload = this.authService.login(user);
+      }
+
+      return handleApiResponse(
+          'Login successfully',
+          !user?HttpStatus.BAD_REQUEST:HttpStatus.OK,
+          payload,
+          null,
+      );
+    } catch (error) {
+      console.error('Error fetching student:', error);
+      return handleApiResponse(
+          'Failed to login',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          null,
+          error,
+      );
     }
-    return this.authService.login(user);
+
   }
 }

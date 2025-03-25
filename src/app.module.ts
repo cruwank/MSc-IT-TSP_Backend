@@ -5,6 +5,15 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { User } from './users/entities/user.entity';
+import {TeachersModule} from "./teachers/teachers.module";
+import {StudentsModule} from "./students/students.module";
+import {SubjectsModule} from "./subjects/subjects.module";
+import {AttendanceModule} from "./attendance/attendance.module";
+import {ClassScheduleModule} from "./class-schedule/class-schedule.module";
+import {BatchesModule} from "./batches/batches.module";
+import {CoursesModule} from "./courses/courses.module";
+import {EnrollmentModule} from "./enrollment/enrollment.module";
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -12,14 +21,26 @@ import { User } from './users/entities/user.entity';
       type: 'mysql',
       host: 'localhost',
       port: 3306,
-      username: 'myuser',
-      password: 'mypassword',
+      username: 'root',
+      password: 'Iyartitl1',
       database: 'e_attendance',
-      entities: [User],
-      synchronize: true, // disable in production
+      entities: [],
+      synchronize: true,
+      logging: false,
+      autoLoadEntities: true,
+      timezone: 'Z',// disable in production
     }),
     UsersModule,
     AuthModule,
+    TeachersModule,
+    StudentsModule,
+    SubjectsModule,
+    AttendanceModule,
+    ClassScheduleModule,
+    BatchesModule,
+    CoursesModule,
+    EnrollmentModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -13,7 +13,7 @@ import {StudentsModule} from "../students/students.module";
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: 'SECRET_KEY',
-      signOptions: { expiresIn: '24h' },
+      signOptions: { expiresIn: '30m' },
     }),
   ],
   providers: [AuthService, JwtStrategy],

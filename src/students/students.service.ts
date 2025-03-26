@@ -24,6 +24,7 @@ export class StudentsService {
 
   async create(createStudentDto: CreateStudentDto): Promise<Student> {
     createStudentDto.status = 'ACTIVE'
+    createStudentDto.otp_code = '0101'
     const student = this.studentRepository.create(createStudentDto);
     return this.studentRepository.save(student);
   }
@@ -44,13 +45,14 @@ export class StudentsService {
 
   // Update a student
   async update(id: number, updateStudentDto: UpdateStudentDto,user: any): Promise<Student> {
-    console.log("user.sub")
-    console.log(user)
+
+    validateParams(updateStudentDto,['phone_number','first_name','last_name','email'])
     const student = await this.findOne(id);
     Object.assign(student, updateStudentDto);
     updateStudentDto.status = 'ACTIVE'
     student.modified_by = user.userId;
     return this.studentRepository.save(student);
+
   }
 
   // Delete a student
@@ -126,7 +128,7 @@ export class StudentsService {
     // Filter by status
     if (value) {
       query.andWhere(
-          'batch.name LIKE :name OR course.course_name LIKE :name OR students.first_name LIKE :name OR students.last_name LIKE :name',
+          'batch.name LIKE :name OR students.phone_number LIKE :name OR students.email LIKE :name OR course.course_name LIKE :name OR students.first_name LIKE :name OR students.last_name LIKE :name',
           { name: `%${value}%` }
       );
     }

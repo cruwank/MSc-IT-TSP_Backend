@@ -5,6 +5,7 @@ import { UpdateClassScheduleDto } from './dto/update-class-schedule.dto';
 import {handleApiResponse} from "../common/helpers/response.helper";
 import {ClassScheduleDto} from "./dto/class-schedule.dto";
 import {FastifyReply} from "fastify/types/reply";
+import {Public} from "../auth/decorators/public.decorator";
 
 @Controller('class-schedule')
 export class ClassScheduleController {
@@ -142,6 +143,7 @@ export class ClassScheduleController {
     }
   }
 
+  @Public()
   @Get('qr/view/:id/:width/:margin')
   async viewQr(@Param('id') id: number,@Param('width') width: number,@Param('margin') margin: number,@Res() res: FastifyReply) {
     try {

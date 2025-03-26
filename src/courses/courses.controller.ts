@@ -4,6 +4,8 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import {handleApiResponse} from "../common/helpers/response.helper";
 import {ClassScheduleDto} from "../class-schedule/dto/class-schedule.dto";
+import {AttendanceDto} from "../attendance/dto/attendance.dto";
+import {CourseDto} from "./dto/course.dto";
 
 @Controller('courses')
 export class CoursesController {
@@ -115,6 +117,27 @@ export class CoursesController {
       console.error('Error deleting course:', error);
       return handleApiResponse(
           'Failed to delete course',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          null,
+          error,
+      );
+    }
+  }
+
+  @Post('filter')
+  async filter(@Body() courseDto: CourseDto) {
+    try {
+      const payload = await this.courseService.filter(courseDto);
+      return handleApiResponse(
+          'Courses filter successfully',
+          HttpStatus.OK,
+          payload,
+          null,
+      );
+    } catch (error) {
+      console.error('Error creating course:', error);
+      return handleApiResponse(
+          'Failed to filter courses',
           HttpStatus.INTERNAL_SERVER_ERROR,
           null,
           error,

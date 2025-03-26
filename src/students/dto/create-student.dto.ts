@@ -19,7 +19,10 @@ export class CreateStudentDto {
 
     @IsOptional()
     @IsEnum(['ACTIVE', 'INACTIVE'])
-    status?: 'ACTIVE'|'INACTIVE';
+    status?: 'ACTIVE'|'INACTIVE'
+
+    @IsOptional()
+    otp_code?: string;
 
     @IsOptional()
     @IsPhoneNumber()

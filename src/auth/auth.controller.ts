@@ -20,7 +20,7 @@ export class AuthController {
       if (!user) {
         payload= 'Invalid credentials' ;
       }else {
-        payload = this.authService.login(user);
+        payload = await this.authService.login(user);
       }
 
       return handleApiResponse(

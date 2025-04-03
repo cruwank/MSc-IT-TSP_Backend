@@ -10,7 +10,6 @@ import {validateParams} from "../common/helpers/validator.helper";
 import {paginate} from "../common/helpers/common.helper";
 import {AttendanceDto} from "./dto/attendance.dto";
 import {da} from "date-fns/locale";
-import {Workbook} from "exceljs";
 import Stream, {Readable} from "stream"; // Import date-fns for comparison
 import { format } from 'fast-csv';
 @Injectable()
